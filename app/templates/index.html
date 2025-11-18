@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="static/css/main.css">
+</head>
+
+<body>
+
+    <div class="flex">
+        <aside class="w-60">
+            <ul class="text-center">
+                <li>
+                    Network Device
+                </li>
+            </ul>
+        </aside>
+        <table class="w-full mt-14 m-4 shadow rounded-lg border-collapse">
+            <caption class="caption-top">
+                Table 3.1: Professional wrestlers and their signature moves.
+            </caption>
+            <thead class="bg-gray-50 border-b-2 border-gray-200">
+                <tr class="">
+                    <th class="uppercase p-3 text-left font-semibold text-sm tracking-wide">Name</th>
+                    <th class="uppercase p-3 text-left font-semibold text-sm tracking-wide">Model</th>
+                    <th class="uppercase p-3 text-left font-semibold text-sm tracking-wide">mac</th>
+                    <th class="uppercase p-3 text-left font-semibold text-sm tracking-wide">ip</th>
+                    <th class="uppercase p-3 text-left font-semibold text-sm tracking-wide">Username</th>
+                    <th class="uppercase p-3 text-left font-semibold text-sm tracking-wide">Password</th>
+                    <th class="uppercase p-3 text-left font-semibold text-sm tracking-wide">Location</th>
+                    <th class="uppercase p-3 text-left font-semibold text-sm tracking-wide">Action</th>
+                </tr>
+            </thead>
+            <tbody class="[&>*:nth-child(odd)]:bg-gray-200">
+                {% for data in datas %}
+                <tr>
+                    <td class="p-2 text-gray-700 text-left capitalize">{{data['name']}}</td>
+                    <td class="p-2 text-gray-700 text-left capitalize">{{data['model']}}</td>
+                    <td class="p-2 text-gray-700 text-left capitalize">{{data['mac']}}</td>
+                    <td class="p-2 text-gray-700 text-left capitalize">{{data['ip']}}</td>
+                    <td class="p-2 text-gray-700 text-left capitalize">{{data['username']}}</td>
+                    <td class="p-2 text-gray-700 text-left capitalize">{{data['password']}}</td>
+                    <td class="p-2 text-gray-700 text-left capitalize">{{data['location']}}</td>
+                    <td><button class="p-2 bg-green-400 rounded-full font-bold">edit</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
