@@ -4,6 +4,7 @@ class MySQLCRUD:
     def __init__(self ):
         self.conn = mysql.connection
         self.cursor = mysql.connection.cursor()
+        self.error = ''
         # self.cursor = self.conn.cursor()
 
     def create(self, table, data):
@@ -15,24 +16,30 @@ class MySQLCRUD:
             self.cursor.execute(sql, tuple(data.values()))
             self.conn.commit()
             return self.cursor.lastrowid
-        except mysql.Error as e:
+        except self.conn.Error as e:
             self.conn.rollback()
             print(f"Error creating record: {e}")
+            self.error = str(e)
             return None
 
     def read(self, table, conditions=None, columns='*'):
-        """Retrieves records from the specified table."""
-        sql = f"SELECT {columns} FROM {table}"
-        if conditions:
-            where_clause = ' AND '.join([f"{col} = %s" for col in conditions.keys()])
-            sql += f" WHERE {where_clause}"
-            self.cursor.execute(sql, tuple(conditions.values()))
-        else:
-            self.cursor.execute(sql)
-        if conditions:
-            return self.cursor.fetchone()
-        else:
-            return self.cursor.fetchall()
+       try:
+            """Retrieves records from the specified table."""
+            sql = f"SELECT {columns} FROM {table}"
+            if conditions:
+                where_clause = ' AND '.join([f"{col} = %s" for col in conditions.keys()])
+                sql += f" WHERE {where_clause}"
+                self.cursor.execute(sql, tuple(conditions.values()))
+            else:
+                self.cursor.execute(sql)
+            if conditions:
+                return self.cursor.fetchone()
+            else:
+                return self.cursor.fetchall()
+       except Exception as e:
+           self.error = str(e)
+           print(f"Error updating record: {e}")
+           return None
 
         
 
@@ -47,10 +54,11 @@ class MySQLCRUD:
             self.cursor.execute(sql, values)
             self.conn.commit()
             return self.cursor.rowcount
-        except mysql.Error as e:
+        except self.conn.Error as e:
             self.conn.rollback()
             print(f"Error updating record: {e}")
-            return None
+            self.error = str(e)
+            raise None
 
     def delete(self, table, conditions):
         """Deletes records from the specified table."""
@@ -60,14 +68,17 @@ class MySQLCRUD:
             self.cursor.execute(sql, tuple(conditions.values()))
             self.conn.commit()
             return self.cursor.rowcount
-        except mysql.Error as e:
+        except self.conn.Error as e:
             self.conn.rollback()
             print(f"Error deleting record: {e}")
-            return None
+            self.error = str(e)
+            return e
 
     def close(self):
         """Closes the database connection."""
         self.cursor.close()
+    def get_error(self):
+        return self.error
        
     
 

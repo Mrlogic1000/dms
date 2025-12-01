@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
-from .extensions import mysql,migrate, bcrypt
+from .extensions import mysql,migrate, bcrypt,ma
 from dotenv import load_dotenv
 from flask_cors import CORS
+
 
 from os import environ
 from os import path
@@ -23,6 +24,7 @@ def create_app():
     # db.init_app(app)
     mysql.init_app(app)
     bcrypt.init_app(app)
+    ma.init_app(app)
 
     # migrate.init_app(app,db)
     
