@@ -25,29 +25,30 @@ TABLES['devices'] = (
     "  PRIMARY KEY (`id`)"
     ") ENGINE=InnoDB")
 
-TABLES['maintenances'] = (
-    "CREATE TABLE `maintenances` ("
-    "  `maintenance_id` char(4) NOT NULL,"
+TABLES['logs'] = (
+    "CREATE TABLE `logs` ("
+    "  `log_id` int AUTO_INCREMENT NOT NULL,"
     "  `device_id` int NOT NULL,"
     "  `old_value` varchar(200),"
     "  `new_value` varchar(200),"
-    "  `description` text NOT NULL,"
+    "  `description` varchar(200) NOT NULL,"
     "  `create_at` varchar(200),"
-    "  PRIMARY KEY (`maintenance_id`), "
-     "  CONSTRAINT `maintenance_ibfk_1` FOREIGN KEY (`device_id`) "
-    "     REFERENCES `devices` (`id`) ON DELETE CASCADE"
+    "  PRIMARY KEY (`log_id`) "
+    
     ") ENGINE=InnoDB")
 
-# TABLES['salaries'] = (
-#     "CREATE TABLE `salaries` ("
-#     "  `emp_no` int(11) NOT NULL,"
-#     "  `salary` int(11) NOT NULL,"
-#     "  `from_date` date NOT NULL,"
-#     "  `to_date` date NOT NULL,"
-#     "  PRIMARY KEY (`emp_no`,`from_date`), KEY `emp_no` (`emp_no`),"
-#     "  CONSTRAINT `salaries_ibfk_1` FOREIGN KEY (`emp_no`) "
-#     "     REFERENCES `employees` (`emp_no`) ON DELETE CASCADE"
-#     ") ENGINE=InnoDB")
+TABLES['reports'] = (
+    "CREATE TABLE `reports` ("
+    "  `report_id` int(11) AUTO_INCREMENT NOT NULL,"
+    "  `device_id` int(11) NOT NULL,"
+    "  `status` varchar(200) NOT NULL,"
+    "  `comment` text,"
+    "  `create_at` varchar(200),"
+    "  `update_at` varchar(200) ,"
+    "  PRIMARY KEY (`report_id`),"
+    "  CONSTRAINT `salaries_ibfk_1` FOREIGN KEY (`device_id`) "
+    "     REFERENCES `devices` (`id`) ON DELETE CASCADE"
+    ") ENGINE=InnoDB")
 
 # TABLES['dept_emp'] = (
 #     "CREATE TABLE `dept_emp` ("
@@ -146,6 +147,7 @@ dic = {
     'manufacture':'Mikrotik',
     'location':'GTI',
     'ip':'172.3.100.1',
+    'user_id':1,
     'create_at':date(9999, 1, 1),
     'update_at':'9999 1 1',
     }
@@ -160,7 +162,6 @@ add_device = ("INSERT INTO devices "
                f"({columns}) "               
                f"VALUES ({placeholders})"
                )
-print(add_device)
 
 # data_device = ('Geert', 'Vanderkelen', tomorrow, 'M', date(1977, 6, 14))
 cursor.execute(add_device, tuple(dic.values()))
